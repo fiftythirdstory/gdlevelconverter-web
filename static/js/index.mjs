@@ -1,4 +1,4 @@
-import { Converter } from "./converter.mjs?v=7";
+import { Converter } from "./converter.mjs?v=8";
 
 const error_block = document.querySelector("#error-block");
 const error_title = document.querySelector("#error-title");
@@ -92,6 +92,7 @@ async function reset_state() {
 	// reset loading labels
 	document.querySelector("#level-loading-label").classList.add("is-hidden");
 	document.querySelector("#level-converting-label").classList.add("is-hidden");
+	document.querySelector("#level-converting-legacy-label").classList.add("is-hidden");
 
 	const level_input = document.querySelector("#level-input-element");
 	level_input.classList.remove("is-hidden");
@@ -179,13 +180,21 @@ run_convert_button.addEventListener("click", async (event) => {
 	const groups = Array.from(active_groups_select.selectedOptions).map(v => v.value);
 
 	const converting_label = document.querySelector("#level-converting-label");
+	const converting_legacy_label = document.querySelector("#level-converting-legacy-label");
+	
 	converting_label.classList.remove("is-hidden");
 
 	const conversion_options = document.querySelector("#conversion-options");
 	conversion_options.disabled = true;
 
 	try {
+		// Stage 1: Show "Converting 2.2 → 1.9..."
 		await Converter.run_conversion(groups, true);
+		
+		// Stage 2: Show "Converting 1.9 → 1.0..."
+		// This happens internally in Converter.run_conversion() after 1.9 is obtained
+		// The converting_legacy_label will be shown by run_conversion itself
+		
 	} catch (e) {
 		display_error("level conversion", e);
 		return;
@@ -193,6 +202,7 @@ run_convert_button.addEventListener("click", async (event) => {
 		conversion_options.disabled = false;
 		event.target.disabled = false;
 		converting_label.classList.add("is-hidden");
+		converting_legacy_label.classList.add("is-hidden");
 	}
 });
 

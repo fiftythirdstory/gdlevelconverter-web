@@ -35,10 +35,277 @@
 		body > footer {
 				margin-top: auto;
 		}
+
+		/* Dark Mode Variables */
+		:root {
+			--bg-primary: #ffffff;
+			--bg-secondary: #f5f5f5;
+			--bg-tertiary: #eeeeee;
+			--text-primary: #363636;
+			--text-secondary: #575757;
+			--border-color: #dbdbdb;
+			--card-shadow: rgba(0, 0, 0, 0.1);
+			--input-bg: #ffffff;
+			--input-border: #dbdbdb;
+			--button-text: #363636;
+		}
+
+		html.is-dark-mode {
+			--bg-primary: #1e1e1e;
+			--bg-secondary: #2a2a2a;
+			--bg-tertiary: #333333;
+			--text-primary: #e0e0e0;
+			--text-secondary: #a0a0a0;
+			--border-color: #404040;
+			--card-shadow: rgba(0, 0, 0, 0.5);
+			--input-bg: #2a2a2a;
+			--input-border: #404040;
+			--button-text: #e0e0e0;
+		}
+
+		/* Apply dark mode to body and major elements */
+		html.is-dark-mode body {
+			background-color: var(--bg-primary);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .section {
+			background-color: var(--bg-primary);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .container {
+			background-color: var(--bg-primary);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .title,
+		html.is-dark-mode .subtitle {
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .block {
+			background-color: var(--bg-secondary);
+			border-radius: 0.375rem;
+			padding: 0.5rem;
+		}
+
+		html.is-dark-mode .block:not(.is-hidden) {
+			background-color: transparent;
+		}
+
+		html.is-dark-mode input[type="text"],
+		html.is-dark-mode input[type="email"],
+		html.is-dark-mode input[type="password"],
+		html.is-dark-mode input[type="search"],
+		html.is-dark-mode input[type="number"],
+		html.is-dark-mode textarea,
+		html.is-dark-mode select {
+			background-color: var(--input-bg);
+			border: 1px solid var(--input-border);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .file-cta {
+			background-color: var(--bg-secondary);
+			border-color: var(--border-color);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .file-cta:hover {
+			background-color: var(--bg-tertiary);
+		}
+
+		html.is-dark-mode .button.is-primary {
+			background-color: #3273dc;
+			border-color: transparent;
+			color: #fff;
+		}
+
+		html.is-dark-mode .button.is-info.is-outlined {
+			border-color: #3298dc;
+			color: #3298dc;
+		}
+
+		html.is-dark-mode .button.is-info.is-outlined:hover {
+			background-color: rgba(50, 152, 220, 0.1);
+			border-color: #3298dc;
+		}
+
+		html.is-dark-mode .button {
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .button:not(.is-primary) {
+			background-color: var(--bg-secondary);
+			border-color: var(--border-color);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .button:not(.is-primary):hover {
+			background-color: var(--bg-tertiary);
+			border-color: var(--border-color);
+		}
+
+		html.is-dark-mode .radio + label,
+		html.is-dark-mode .checkbox + label {
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .label {
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .select select {
+			background-color: var(--input-bg);
+			border-color: var(--input-border);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .select select:hover,
+		html.is-dark-mode .select select:focus {
+			border-color: var(--border-color);
+		}
+
+		html.is-dark-mode .select::after {
+			border-color: var(--text-primary);
+		}
+
+		html.is-dark-mode code {
+			background-color: var(--bg-secondary);
+			color: var(--text-primary);
+			padding: 0.25rem 0.5rem;
+		}
+
+		html.is-dark-mode pre {
+			background-color: var(--bg-secondary);
+			color: var(--text-primary);
+			border: 1px solid var(--border-color);
+			padding: 1rem;
+		}
+
+		html.is-dark-mode .footer {
+			background-color: var(--bg-secondary);
+			color: var(--text-primary);
+			border-top: 1px solid var(--border-color);
+		}
+
+		html.is-dark-mode .footer a {
+			color: #3298dc;
+		}
+
+		html.is-dark-mode .footer a:hover {
+			color: #1d6db8;
+		}
+
+		html.is-dark-mode a {
+			color: #3298dc;
+		}
+
+		html.is-dark-mode a:hover {
+			color: #1d6db8;
+		}
+
+		html.is-dark-mode .box {
+			background-color: var(--bg-secondary);
+			border: 1px solid var(--border-color);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .message {
+			background-color: var(--bg-secondary);
+			border: 1px solid var(--border-color);
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .icon-text {
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode small {
+			color: var(--text-secondary);
+		}
+
+		html.is-dark-mode .is-size-3,
+		html.is-dark-mode .is-size-4 {
+			color: var(--text-primary);
+		}
+
+		/* Dark mode toggle button styling */
+		.navbar-item.theme-toggle {
+			cursor: pointer;
+			padding: 0.5rem 1rem;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			border-radius: 0.375rem;
+			transition: background-color 0.2s ease;
+		}
+
+		.navbar-item.theme-toggle:hover {
+			background-color: #f5f5f5;
+		}
+
+		html.is-dark-mode .navbar-item.theme-toggle:hover {
+			background-color: var(--bg-secondary);
+		}
+
+		.navbar {
+			background-color: var(--bg-secondary);
+			border-bottom: 1px solid var(--border-color);
+		}
+
+		html.is-dark-mode .navbar {
+			background-color: var(--bg-secondary);
+			border-bottom: 1px solid var(--border-color);
+		}
+
+		.navbar-brand .navbar-item {
+			color: var(--text-primary);
+		}
+
+		html.is-dark-mode .navbar-brand .navbar-item {
+			color: var(--text-primary);
+		}
+
+		.fieldset {
+			border: 1px solid var(--border-color);
+			padding: 1rem;
+			border-radius: 0.375rem;
+		}
+
+		html.is-dark-mode .fieldset {
+			border-color: var(--border-color);
+			background-color: var(--bg-secondary);
+		}
+
+		html.is-dark-mode fieldset {
+			border-color: var(--border-color);
+		}
 	</style>
 </head>
 
 <body>
+	<nav class="navbar">
+		<div class="navbar-brand">
+			<div class="navbar-item">
+				<strong>2.2 to 1.0 Converter</strong>
+			</div>
+		</div>
+		<div class="navbar-menu">
+			<div class="navbar-end">
+				<div class="navbar-item">
+					<button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">
+						<span class="icon">
+							<i class="fa-solid fa-moon" id="theme-icon"></i>
+						</span>
+						<span id="theme-label">Dark</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
 	<section class="section">
 		<div class="container">
 			<h1 class="title has-text-centered">
@@ -291,7 +558,7 @@
 			</p>
 		</div>
 	</footer>
-	<script type="module" src="./static/js/index.mjs?v=10"></script>
+	<script type="module" src="./static/js/index.mjs?v=11"></script>
 </body>
 
 </html>

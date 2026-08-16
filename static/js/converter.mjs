@@ -130,35 +130,48 @@ export class Converter {
 	 * @param {boolean} conv_white convert white color channel
 	 */
 	static async run_conversion(groups, conv_white) {
+		// Stage 1: Show "Converting 2.2 → 1.9..." and run Qimiko conversion
 		const report = await this.#run_on_worker("run_conversion", this.#current_level, groups, conv_white);
 
 		const gmd_data = await this.#run_on_worker("level_to_gmd", this.#current_level);
 
-		// Convert 1.9 level string to 1.0 level string
-		const levelString19 = gmd_data;
-		const legacyReport = await this.run_legacy_conversion(levelString19, "1.0");
+		// Stage 2: Show "Converting 1.9 → 1.0..." and run legacy conversion
+		const converting_label = document.querySelector("#level-converting-label");
+		const converting_legacy_label = document.querySelector("#level-converting-legacy-label");
+		
+		converting_label.classList.add("is-hidden");
+		converting_legacy_label.classList.remove("is-hidden");
 
-		const legacy_blob = new Blob([legacyReport.converted], { type: "text/plain" });
+		try {
+			// Convert 1.9 level string to 1.0 level string
+			const levelString19 = gmd_data;
+			const legacyReport = await this.run_legacy_conversion(levelString19, "1.0");
 
-		const download_button = document.querySelector("#download-gmd");
-		download_button.href = window.URL.createObjectURL(legacy_blob);
-		download_button.download = `${this.#current_level["name"]}_1.0.txt`;
+			const legacy_blob = new Blob([legacyReport.converted], { type: "text/plain" });
 
-		// Update report with both Qimiko and legacy conversion info
-		const combined_report = {
-			qimiko_removed_objects: report.removed_objects,
-			qimiko_preconversion_object_count: report.preconversion_object_count,
-			legacy_removed_count: legacyReport.removedCount,
-			legacy_illegal_objects: legacyReport.illegalObjects
-		};
+			const download_button = document.querySelector("#download-gmd");
+			download_button.href = window.URL.createObjectURL(legacy_blob);
+			download_button.download = `${this.#current_level["name"]}_1.0.txt`;
 
-		await this.#parse_report(combined_report);
+			// Update report with both Qimiko and legacy conversion info
+			const combined_report = {
+				qimiko_removed_objects: report.removed_objects,
+				qimiko_preconversion_object_count: report.preconversion_object_count,
+				legacy_removed_count: legacyReport.removedCount,
+				legacy_illegal_objects: legacyReport.illegalObjects
+			};
 
-		const report_element = document.querySelector("#conversion-report-element");
-		report_element.classList.remove("is-hidden");
+			await this.#parse_report(combined_report);
 
-		const info_element = document.querySelector("#level-info-element");
-		info_element.classList.add("is-hidden");
+			const report_element = document.querySelector("#conversion-report-element");
+			report_element.classList.remove("is-hidden");
+
+			const info_element = document.querySelector("#level-info-element");
+			info_element.classList.add("is-hidden");
+		} finally {
+			// Hide the legacy conversion progress indicator
+			converting_legacy_label.classList.add("is-hidden");
+		}
 	}
 
 	/**
@@ -195,6 +208,9 @@ export class Converter {
 			if (report.legacy_illegal_objects.length > 0) {
 				full_report_output += `Illegal object IDs: ${report.legacy_illegal_objects.join(", ")}`;
 			}
+		} else {
+			full_report_output += `\n\n=== Legacy Conversion (1.9 → 1.0) ===\n`;
+			full_report_output += `All objects successfully converted to 1.0 format.`;
 		}
 
 		const report_element = document.querySelector("#conversion-report");

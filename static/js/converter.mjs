@@ -19,6 +19,16 @@ const CONVERSION_WORKER_PATH = "./static/js/conversion_worker.mjs?v=8";
  */
 
 /**
+ * Represents output of legacy conversion
+ * @typedef {Object} LegacyConversionReport
+ * @property {string} converted
+ * @property {number} removedCount
+ * @property {string[]} illegalObjects
+ */
+
+import { convertLegacyLevel } from "./legacy-conversion-engine.mjs?v=1";
+
+/**
  * global object that manages the loaded level's state
  */
 export class Converter {
@@ -124,13 +134,25 @@ export class Converter {
 
 		const gmd_data = await this.#run_on_worker("level_to_gmd", this.#current_level);
 
-		const gmd_blob = new Blob([gmd_data], { type: "application/xml" });
+		// Convert 1.9 level string to 1.0 level string
+		const levelString19 = gmd_data;
+		const legacyReport = await this.run_legacy_conversion(levelString19, "1.0");
+
+		const legacy_blob = new Blob([legacyReport.converted], { type: "text/plain" });
 
 		const download_button = document.querySelector("#download-gmd");
-		download_button.href = window.URL.createObjectURL(gmd_blob);
-		download_button.download = `${this.#current_level["name"]}.gmd`;
+		download_button.href = window.URL.createObjectURL(legacy_blob);
+		download_button.download = `${this.#current_level["name"]}_1.0.txt`;
 
-		await this.#parse_report(report)
+		// Update report with both Qimiko and legacy conversion info
+		const combined_report = {
+			qimiko_removed_objects: report.removed_objects,
+			qimiko_preconversion_object_count: report.preconversion_object_count,
+			legacy_removed_count: legacyReport.removedCount,
+			legacy_illegal_objects: legacyReport.illegalObjects
+		};
+
+		await this.#parse_report(combined_report);
 
 		const report_element = document.querySelector("#conversion-report-element");
 		report_element.classList.remove("is-hidden");
@@ -140,19 +162,43 @@ export class Converter {
 	}
 
 	/**
+	 * runs legacy conversion (1.9 → 1.0)
+	 * @param {string} levelString19 level string in 1.9 format
+	 * @param {string} targetVersion target version (default: "1.0")
+	 * @returns {Promise<LegacyConversionReport>}
+	 */
+	static async run_legacy_conversion(levelString19, targetVersion = "1.0") {
+		return convertLegacyLevel(levelString19, targetVersion);
+	}
+
+	/**
 	 * modifies the result info based on the conversion report
-	 * @param {ConversionReport} report report from level conversion
+	 * @param {Object} report combined report from both conversions
 	 */
 	static async #parse_report(report) {
 		const removed_element = document.querySelector("#count-removed");
 
-		const removed_percentage = report.removed_objects.length * 100 / report.preconversion_object_count;
+		// Calculate total removal percentage from Qimiko stage
+		const removed_percentage = report.qimiko_removed_objects.length * 100 / report.qimiko_preconversion_object_count;
 		removed_element.innerText = removed_percentage.toFixed(0);
 
-		const report_output = await this.#run_on_worker("parse_reports", report);
+		const report_output = await this.#run_on_worker("parse_reports", {
+			removed_objects: report.qimiko_removed_objects,
+			preconversion_object_count: report.qimiko_preconversion_object_count
+		});
+
+		// Append legacy conversion info
+		let full_report_output = report_output;
+		if (report.legacy_removed_count > 0) {
+			full_report_output += `\n\n=== Legacy Conversion (1.9 → 1.0) ===\n`;
+			full_report_output += `${report.legacy_removed_count} object(s) removed during legacy conversion.\n`;
+			if (report.legacy_illegal_objects.length > 0) {
+				full_report_output += `Illegal object IDs: ${report.legacy_illegal_objects.join(", ")}`;
+			}
+		}
 
 		const report_element = document.querySelector("#conversion-report");
-		report_element.innerText = report_output;
+		report_element.innerText = full_report_output;
 	}
 
 	/**

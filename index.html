@@ -5,11 +5,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>2.2 to 1.9 Level Converter</title>
+	<title>2.2 to 1.0 Level Converter</title>
 
-	<meta name="description" content="Converts levels from Geometry Dash 2.2 to 1.9" />
-	<meta property="og:title" content="2.2 to 1.9 Level Converter" />
-	<meta property="og:description" content="Converts levels from Geometry Dash 2.2 to 1.9" />
+	<meta name="description" content="Converts levels from Geometry Dash 2.2 to 1.0" />
+	<meta property="og:title" content="2.2 to 1.0 Level Converter" />
+	<meta property="og:description" content="Converts levels from Geometry Dash 2.2 to 1.0" />
 	<meta property="og:image" content="https://qimiko.github.io/gdlevelconverter-web/static/icon/site/icon_x192.png" />
 	<meta property="og:url" content="https://qimiko.github.io/gdlevelconverter-web" />
 	<meta property="og:image:width" content="192" />
@@ -42,7 +42,7 @@
 	<section class="section">
 		<div class="container">
 			<h1 class="title has-text-centered">
-				2.2 to 1.9 Level Converter
+				2.2 to 1.0 Level Converter
 			</h1>
 			<div class="block has-text-centered my-6" id="converter-loading-label">
 				<span class="is-size-3 icon-text">
@@ -64,13 +64,13 @@
 									<i class="fas fa-upload"></i>
 								</span>
 								<span class="file-label">
-									Choose a level...
+									Choose a 2.2 level...
 								</span>
 							</span>
 						</label>
 					</div>
 					<div class="mt-2">
-						(accepts .gmd files)
+						(accepts .gmd files from Geometry Dash 2.2)
 					</div>
 				</div>
 				<div class="block has-text-centered my-5 is-hidden" id="level-loading-label">
@@ -90,7 +90,7 @@
 					<b>Description: </b><span id="level-description">Level Description</span>
 				</p>
 				<div class="block">
-					<h4 class="subtitle is-4">Object Conversion Level</h4>
+					<h4 class="subtitle is-4">Object Conversion Level (2.2 → 1.9)</h4>
 					<fieldset id="conversion-options">
 						<div class="block control">
 							<label class="radio">
@@ -147,7 +147,7 @@
 										<i class="fa-regular fa-refresh" aria-hidden="true"></i>
 									</span>
 									<span>
-										Convert
+										Convert to 1.0
 									</span>
 								</button>
 							</p>
@@ -170,16 +170,26 @@
 							<i class="fa-solid fa-spinner fa-pulse mr-1"></i>
 						</span>
 						<span>
-							Converting level...
+							Converting 2.2 → 1.9...
+						</span>
+					</span>
+				</div>
+				<div class="block my-5 is-hidden" id="level-converting-legacy-label">
+					<span class="is-size-4 icon-text">
+						<span class="icon">
+							<i class="fa-solid fa-spinner fa-pulse mr-1"></i>
+						</span>
+						<span>
+							Converting 1.9 → 1.0...
 						</span>
 					</span>
 				</div>
 			</div>
 			<div class="block is-hidden" id="conversion-report-element">
 				<div class="container">
-					<h4 class="title is-4">Level Converted!</h4>
+					<h4 class="title is-4">Level Converted Successfully!</h4>
 					<p class="block">
-						<span id="count-removed">0</span>% of objects removed.
+						<span id="count-removed">0</span>% of objects removed (2.2 → 1.9 stage).
 					</p>
 					<div class="field is-grouped">
 						<p class="control">
@@ -188,7 +198,7 @@
 									<i class="fa-regular fa-download" aria-hidden="true"></i>
 								</span>
 								<span>
-									Download
+									Download 1.0 Level
 								</span>
 							</a>
 						</p>
@@ -198,18 +208,20 @@
 									<i class="fa-regular fa-refresh" aria-hidden="true"></i>
 								</span>
 								<span>
-									Do another level
+									Convert Another Level
 								</span>
 							</a>
 						</p>
 					</div>
 					<div class="block">
 						<small>
-							Windows users:
-							<a href="https://github.com/matcool/mats-nice-hacks">Mat's 1.9 hacks</a>
-							can be used to import the converted level.
+							Your level has been converted through both stages:
 							<br />
-							This feature is also built into the Android version of the 1.9 GDPS.
+							Stage 1: Geometry Dash 2.2 → 1.9 (using Qimiko's converter)
+							<br />
+							Stage 2: 1.9 → 1.0 (using Legacy-Level-Converter)
+							<br />
+							The downloaded file is in plain text format and compatible with Geometry Dash 1.0-1.8.
 						</small>
 					</div>
 					<div>
@@ -244,8 +256,14 @@
 	<footer class="footer">
 		<div class="content has-text-centered">
 			<p>
-				Level conversion tool written by <a href="https://xyze.dev">zmx</a>.
-				Page source and script licensed under the <a href="./LICENSE.txt">MIT license</a>.
+				Geometry Dash 2.2 → 1.0 converter combining:
+				<br />
+				2.2 → 1.9 conversion by <a href="https://xyze.dev">zmx</a> (Qimiko)
+				<br />
+				1.9 → 1.0 conversion by <a href="https://github.com/Wayveyx">Wayveyx</a> (Legacy-Level-Converter)
+			</p>
+			<p>
+				Page source licensed under the <a href="./LICENSE.txt">MIT license</a>.
 			</p>
 			<p>
 				<a href="https://github.com/qimiko/gdlevelconverter-web">
@@ -254,26 +272,26 @@
 							<i class="fa-brands fa-github"></i>
 						</span>
 						<span>
-							Page Source
+							Qimiko's 2.2→1.9 Converter
 						</span>
 					</span>
 				</a>
 			</p>
 			<p>
-				<a href="https://github.com/qimiko/gdlevelconverter">
+				<a href="https://github.com/Wayveyx/Legacy-Level-Converter">
 					<span class="icon-text">
 						<span class="icon">
-							<i class="fa-solid fa-scroll"></i>
+							<i class="fa-brands fa-github"></i>
 						</span>
 						<span>
-							Standalone Conversion Script
+							Wayveyx's 1.9→1.0 Converter
 						</span>
 					</span>
 				</a>
 			</p>
 		</div>
 	</footer>
-	<script type="module" src="./static/js/index.mjs?v=9"></script>
+	<script type="module" src="./static/js/index.mjs?v=10"></script>
 </body>
 
 </html>
